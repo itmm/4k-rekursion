@@ -3,21 +3,19 @@
 
 void print_rec(unsigned val, std::ostream& out) {
 	char dig = (val % 10) + '0';
-	val /= 10;
-	if (val) { print_rec(val, out); }
+	if (val /= 10) { print_rec(val, out); }
 	out.put(dig);
 }
-#line 35
+#line 34
 void print_str(unsigned val, std::ostream& out) {
 	std::string res;
 	do {
 		char dig = (val % 10) + '0';
 		res.insert(res.begin(), dig);
-		val /= 10;
-	} while (val);
+	} while (val /= 10);
 	out << res;
 }
-#line 59
+#line 57
 #include <limits>
 
 void print_raw(unsigned val, std::ostream& out) {
@@ -25,13 +23,11 @@ void print_raw(unsigned val, std::ostream& out) {
 	char* cur { buf + sizeof(buf) };
 	*--cur = '\0';
 	do {
-		char dig = (val % 10) + '0';
-		*--cur = dig;
-		val /= 10;
-	} while (val);
+		*--cur = (val % 10) + '0';
+	} while (val /= 10);
 	out << cur;
 }
-#line 89
+#line 84
 template<void (FN)(unsigned, std::ostream&)>
 void print_int(int val, std::ostream& out) {
 	if (val < 0) {
@@ -44,7 +40,7 @@ void print_int(int val, std::ostream& out) {
 	}
 	FN(static_cast<unsigned>(val), out);
 }
-#line 116
+#line 112
 #include <cassert>
 #include <sstream>
 
@@ -69,8 +65,8 @@ void assert_unsigned(void (fn)(T, std::ostream&)) {
 
 template<typename T>
 void assert_signed(void (fn)(T, std::ostream&)) {
-	assert_unsigned<T>(fn);
-	assert_print<T>(
+	assert_unsigned(fn);
+	assert_print(
 		fn, -1, -9, -10, -11, -9999, -10000,
 		std::numeric_limits<T>::min()
 	);
@@ -78,8 +74,8 @@ void assert_signed(void (fn)(T, std::ostream&)) {
 
 template<void (FN)(unsigned, std::ostream&)>
 void assert_fn() {
-	assert_unsigned<unsigned>(FN);
-	assert_signed<int>(print_int<FN>);
+	assert_unsigned(FN);
+	assert_signed(print_int<FN>);
 }
 
 int main() {

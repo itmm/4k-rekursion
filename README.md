@@ -21,13 +21,12 @@ in Dezimal-Notation ausgeben. In C++ schreibe ich die Funktion in
 
 void print_rec(unsigned val, std::ostream& out) {
 	char dig = (val % 10) + '0';
-	val /= 10;
-	if (val) { print_rec(val, out); }
+	if (val /= 10) { print_rec(val, out); }
 	out.put(dig);
 }
 ```
 
-Das sind nur sechs Zeilen. Meine iterative Lösung mit einem `std::string`
+Das sind nur fünf Zeilen. Meine iterative Lösung mit einem `std::string`
 sieht gar nicht so viel schlimmer aus:
 
 ```c++
@@ -37,14 +36,13 @@ void print_str(unsigned val, std::ostream& out) {
 	do {
 		char dig = (val % 10) + '0';
 		res.insert(res.begin(), dig);
-		val /= 10;
-	} while (val);
+	} while (val /= 10);
 	out << res;
 }
 ```
 
-Immerhin schon neun Zeilen (ein Blowup um 50%). Und schneller und schöner
-ist diese Version auch nicht. Das Detail ist in der `insert`-Methode
+Immerhin schon acht Zeilen (ein Blowup von über 50%). Und schneller und
+schöner ist diese Version auch nicht. Das Detail ist in der `insert`-Methode
 versteckt. Diese muss Platz für die neuen Zeichen schaffen und bei einer
 mittelmäßigen Implementierung in jedem Durchgang alle bisherigen Zeichen
 kopieren.
@@ -63,17 +61,14 @@ void print_raw(unsigned val, std::ostream& out) {
 	char* cur { buf + sizeof(buf) };
 	*--cur = '\0';
 	do {
-		char dig = (val % 10) + '0';
-		*--cur = dig;
-		val /= 10;
-	} while (val);
+		*--cur = (val % 10) + '0';
+	} while (val /= 10);
 	out << cur;
 }
 ```
 
-Mal ganz davon abgesehen, dass wir nun schon 11 Zeilen haben: der Code ist
-komplizierter, da ich zusätzlich die Verwaltung des Arrays übernehmen
-muss.
+Auch wenn die Zeilenzahl nur auf neun wächst: der Code ist komplizierter,
+da ich zusätzlich die Verwaltung des Arrays übernehmen muss.
 
 Und für die IDE ist nicht leicht zu erkennen, dass kein Array-Unterlauf
 stattfinden kann.
@@ -105,6 +100,7 @@ void print_int(int val, std::ostream& out) {
 Schon mit diesem kleinen Beispiel wird klar, dass eine Rekursion
 kein Grund für eine Warnung ist. Auf inherent rekursive Algorithmen wie
 das Parsen von Grammatiken bin ich noch gar nicht eingegangen.
+Verwendet Rekursion wo es sinnvoll ist!
 
 ## Test Cases
 
@@ -137,8 +133,8 @@ void assert_unsigned(void (fn)(T, std::ostream&)) {
 
 template<typename T>
 void assert_signed(void (fn)(T, std::ostream&)) {
-	assert_unsigned<T>(fn);
-	assert_print<T>(
+	assert_unsigned(fn);
+	assert_print(
 		fn, -1, -9, -10, -11, -9999, -10000,
 		std::numeric_limits<T>::min()
 	);
@@ -146,8 +142,8 @@ void assert_signed(void (fn)(T, std::ostream&)) {
 
 template<void (FN)(unsigned, std::ostream&)>
 void assert_fn() {
-	assert_unsigned<unsigned>(FN);
-	assert_signed<int>(print_int<FN>);
+	assert_unsigned(FN);
+	assert_signed(print_int<FN>);
 }
 
 int main() {
