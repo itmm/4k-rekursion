@@ -73,6 +73,13 @@ da ich zusätzlich die Verwaltung des Arrays übernehmen muss.
 Und für die IDE ist nicht leicht zu erkennen, dass kein Array-Unterlauf
 stattfinden kann.
 
+## Fazit
+
+Schon mit diesem kleinen Beispiel wird klar, dass eine Rekursion
+kein Grund für eine Warnung ist. Auf inherent rekursive Algorithmen wie
+das Parsen von Grammatiken bin ich noch gar nicht eingegangen.
+Verwendet Rekursion wo es sinnvoll ist!
+
 ## Negative Zahlen
 
 Nur zur Vollständigkeit: negative Zahlen können wir recht einfach auf
@@ -94,13 +101,6 @@ void print_int(int val, std::ostream& out) {
 	FN(static_cast<unsigned>(val), out);
 }
 ```
-
-## Fazit
-
-Schon mit diesem kleinen Beispiel wird klar, dass eine Rekursion
-kein Grund für eine Warnung ist. Auf inherent rekursive Algorithmen wie
-das Parsen von Grammatiken bin ich noch gar nicht eingegangen.
-Verwendet Rekursion wo es sinnvoll ist!
 
 ## Test Cases
 

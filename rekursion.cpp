@@ -27,7 +27,7 @@ void print_raw(unsigned val, std::ostream& out) {
 	} while (val /= 10);
 	out << cur;
 }
-#line 84
+#line 91
 template<void (FN)(unsigned, std::ostream&)>
 void print_int(int val, std::ostream& out) {
 	if (val < 0) {
