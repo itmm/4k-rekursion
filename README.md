@@ -131,12 +131,11 @@ void assert_unsigned(void (fn)(T, std::ostream&)) {
 	);
 }
 
-template<typename T>
-void assert_signed(void (fn)(T, std::ostream&)) {
+void assert_signed(void (fn)(int, std::ostream&)) {
 	assert_unsigned(fn);
 	assert_print(
 		fn, -1, -9, -10, -11, -9999, -10000,
-		std::numeric_limits<T>::min()
+		std::numeric_limits<int>::min()
 	);
 }
 
