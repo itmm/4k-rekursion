@@ -105,7 +105,7 @@ Verwendet Rekursion wo es sinnvoll ist!
 ## Test Cases
 
 Hier sind ein paar Test-Cases für die Funktionen, um sicherzustellen, dass
-die ganzen Programme das machen, was ich von Ihnen erwarte:
+die ganzen Programme das machen, was ich von ihnen erwarte:
 
 ```c++
 // ...
