@@ -131,18 +131,15 @@ void assert_unsigned(void (fn)(T, std::ostream&)) {
 	);
 }
 
-void assert_signed(void (fn)(int, std::ostream&)) {
+template<void (FN)(unsigned, std::ostream&)>
+void assert_fn() {
+	assert_unsigned(FN);
+	auto fn { print_int<FN> };
 	assert_unsigned(fn);
 	assert_print(
 		fn, -1, -9, -10, -11, -9999, -10000,
 		std::numeric_limits<int>::min()
 	);
-}
-
-template<void (FN)(unsigned, std::ostream&)>
-void assert_fn() {
-	assert_unsigned(FN);
-	assert_signed(print_int<FN>);
 }
 
 int main() {
