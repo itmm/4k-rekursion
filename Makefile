@@ -1,12 +1,15 @@
 .PHONY = all clean
 
-all: ./rekursion
-	./rekursion
+APP = ./rekursion
+SOURCE = ${APP:=.cpp}
+
+all: ${APP}
+	${APP}
 
 clean:
-	rm -f ./rekursion
+	rm -f ${APP} ${SOURCE}
 
-rekursion.cpp: rekursion.md
+${SOURCE}: README.md
 	mdp $^
 	./limit.sh $^
 

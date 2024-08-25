@@ -1,4 +1,4 @@
-#line 20 "rekursion.md"
+#line 20 "README.md"
 #include <iostream>
 
 void print_rec(unsigned val, std::ostream& out) {
